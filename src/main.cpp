@@ -1,5 +1,5 @@
 
-#include "project_5.h"
+#include "ray_tracing_project.h"
 #include "camera.h"
 #include "hittable.h"
 #include "hittable_list.h"

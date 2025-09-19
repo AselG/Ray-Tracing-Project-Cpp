@@ -1,5 +1,5 @@
-#ifndef PROJECT_5_H
-#define PROJECT_5_H
+#ifndef RAY_TRACING_PROJECT_H
+#define RAY_TRACING_PROJECT_H
 
 #include <iostream>
 #include <cmath>

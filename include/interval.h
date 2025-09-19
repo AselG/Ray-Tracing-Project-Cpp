@@ -1,7 +1,7 @@
 #ifndef INTERVAL_H
 #define INTERVAL_H
 
-#include "project_5.h"
+#include "ray_tracing_project.h"
 
 class interval{
     public:
