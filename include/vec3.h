@@ -5,6 +5,8 @@
 #include <iostream>
 #include <cmath>
 
+#include "ray_tracing_project.h"
+
 class vec3{
     private:
         double v[3];
@@ -55,6 +57,14 @@ class vec3{
             return ls;
         }
 
+        static vec3 random() {
+            return vec3(random_double(), random_double(), random_double());
+        }
+
+        static vec3 random(double min, double max) {
+            return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
+        }
+
 };
 
 // Utility Functions
@@ -86,6 +96,26 @@ inline vec3 unit_vector(const vec3& a){
 
 inline std::ostream& operator<<(std::ostream& cout, const vec3& a){
     return cout << a[0] << ' ' << a[1] << ' ' << a[2];
+}
+
+inline vec3 random_unit_vector() {
+    while(true) {
+        vec3 rand_vec = vec3::random(-1,1);
+        double len_sq = rand_vec.length_squared();
+        if( len_sq < 1 && len_sq > 0.00000000001) {
+            return rand_vec / sqrt(len_sq);
+        }
+    }
+}
+
+inline vec3 random_on_hemisphere(const vec3& norm) {
+    vec3 rand_on_unit_sphere = random_unit_vector();
+    if(dot(rand_on_unit_sphere, norm) > 0.0) {
+        return rand_on_unit_sphere;
+    }
+    else {
+        return -rand_on_unit_sphere;
+    }
 }
 
 using point3 = vec3;

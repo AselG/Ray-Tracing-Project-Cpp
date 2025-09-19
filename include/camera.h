@@ -8,6 +8,7 @@ class camera{
         double aspect_ratio = 1.0;
         int image_width = 100;
         int samples_per_pixel = 10;
+        int max_recursion_depth = 10;
 
         void render(const hittable& world) {
             initialize();
@@ -28,7 +29,7 @@ class camera{
                     colour pixel_col = colour(0,0,0);
                     for(int sample=0; sample<samples_per_pixel; sample++){
                         ray r = get_ray(i,j);
-                        pixel_col += ray_colour(r, world);
+                        pixel_col += ray_colour(r, max_recursion_depth, world);
                     }
                     // Write colour to cout stream
                     write_colour(std::cout, pixel_samples_scale * pixel_col);
@@ -68,11 +69,16 @@ class camera{
             pixel_top_left_pos = viewport_top_left + pixel_delta_u/2 + pixel_delta_v/2;
         }
 
-        colour ray_colour( const ray& r, const hittable& world ) const {
+        colour ray_colour( const ray& r, int depth, const hittable& world ) const {
+
+            if(depth <= 0) {
+                return colour(0,0,0);
+            }
 
             hit_record rec;
-            if( world.hit(r, interval(0, infinity), rec) ) {
-                return 0.5 * (rec.normal + colour(1,1,1) );
+            if( world.hit(r, interval(0.001, infinity), rec) ) {
+                vec3 direction = rec.normal + random_unit_vector();
+                return 0.5 * ray_colour( ray(rec.p, direction), depth-1, world );
             }
 
             vec3 unit_direction = unit_vector(r.direction());
