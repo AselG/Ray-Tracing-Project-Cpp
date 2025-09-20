@@ -8,10 +8,9 @@
 #include "ray_tracing_project.h"
 
 class vec3{
-    private:
+    public:
         double v[3];
 
-    public:
         vec3(): v{0,0,0} {}
         vec3(double x, double y, double z): v{x,y,z} {}
 
@@ -65,6 +64,10 @@ class vec3{
             return vec3(random_double(min, max), random_double(min, max), random_double(min, max));
         }
 
+        bool near_zero() {
+            double eps = 1e-8;
+            return (std::fabs(v[0]) < eps) && (std::fabs(v[1]) < eps) && (std::fabs(v[2]) < eps);
+        }
 };
 
 // Utility Functions
@@ -74,6 +77,9 @@ inline vec3 operator+(const vec3& a, const vec3& b){
 }
 inline vec3 operator-(const vec3& a, const vec3& b){
     return vec3( a[0] - b[0], a[1] - b[1], a[2] - b[2] );
+}
+inline vec3 operator*(const vec3& a, const vec3& b) {
+    return vec3(a.v[0] * b.v[0], a.v[1] * b.v[1], a.v[2] * b.v[2]);
 }
 inline vec3 operator*(const vec3& a, const double b){
     return vec3( a[0] * b, a[1] * b, a[2] * b );
@@ -116,6 +122,12 @@ inline vec3 random_on_hemisphere(const vec3& norm) {
     else {
         return -rand_on_unit_sphere;
     }
+}
+
+inline vec3 reflection(const vec3& incident, const vec3& normal) {
+    // Assume normal to be normalized
+    vec3 b = normal * dot(incident, normal);
+    return incident - 2*b;
 }
 
 using point3 = vec3;
