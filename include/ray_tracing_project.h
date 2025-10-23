@@ -10,6 +10,7 @@
 // CONSTANTS
 
 const double infinity = std::numeric_limits<double>::infinity();
+const double epsilon = std::numeric_limits<double>::epsilon();
 const double pi = 3.1415926535897932385;
 
 // UTILITY FUNCTIONS

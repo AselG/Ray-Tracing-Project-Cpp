@@ -97,6 +97,7 @@ inline vec3 cross(const vec3& a, const vec3& b){
     return vec3( a[1]*b[2] - a[2]*b[1], a[2]*b[0] - a[0]*b[2], a[0]*b[1] - a[1]*b[0]);
 }
 inline vec3 unit_vector(const vec3& a){
+    if (a.length() == 0) return a;
     return a / a.length();
 }
 

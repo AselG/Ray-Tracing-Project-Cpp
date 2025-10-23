@@ -1,32 +1,29 @@
-
 #include "ray_tracing_project.h"
 #include "camera.h"
 #include "hittable.h"
 #include "hittable_list.h"
 #include "sphere.h"
+#include "triangle.h"
 #include "material.h"
 
-int main(){
-    // World objects
+int main() {
     hittable_list world;
 
-    auto material_ground = std::make_shared<lambertian>(colour(0.8, 0.8, 0.0));
-    auto material_center = std::make_shared<lambertian>(colour(0.1, 0.2, 0.5));
-    auto material_left   = std::make_shared<metal>(colour(0.8, 0.8, 0.8));
-    auto material_right  = std::make_shared<metal>(colour(0.8, 0.6, 0.2));
+    auto material_default = std::make_shared<lambertian>(colour(0.5, 0.2, 0.5));
 
-    world.add(std::make_shared<sphere>(point3( 0.0, -100.5, -2.0), 100.0, material_ground));
-    world.add(std::make_shared<sphere>(point3( 0.0,    0.0, -2.2),   0.5, material_center));
-    world.add(std::make_shared<sphere>(point3(-1.0,    0.0, -2.0),   0.5, material_left));
-    world.add(std::make_shared<sphere>(point3( 1.0,    0.0, -2.0),   0.5, material_right));
+    std::array<point3, 3> t1_verts = { 
+        point3( 0.0, 0.9, -2.2), 
+        point3(-1.0, 0.0, -2.0), 
+        point3( 1.0, 0.0, -2.0) 
+    };
+    world.add(std::make_shared<triangle>(t1_verts, material_default));
 
-    // Camera
+    // --- Camera ---
     camera cam;
-
-    cam.aspect_ratio = 16.0/9.0;
-    cam.image_width = 800;
-    cam.samples_per_pixel = 500;
-    cam.max_recursion_depth = 100;
+    cam.aspect_ratio = 16.0 / 9.0;
+    cam.image_width = 1720;
+    cam.samples_per_pixel = 200;
+    cam.max_recursion_depth = 20;
 
     cam.render(world);
 }
