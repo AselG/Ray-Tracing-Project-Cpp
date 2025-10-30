@@ -26,7 +26,7 @@ class hittable_list : public hittable {
             bool hit_anything = false;
             double closest_hit = ray_t.max;
 
-            for(const auto object : objects) {
+            for(const auto& object : objects) {
                 if(object->hit(r, interval( ray_t.min, closest_hit) , temp_rec)){
                     hit_anything = true;
                     closest_hit = temp_rec.t;

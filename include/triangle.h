@@ -1,5 +1,5 @@
 #ifndef TRIANGLE_H
-#define SPHERE_H
+#define TRIANGLE_H
 
 #include "ray_tracing_project.h"
 #include "hittable.h"
@@ -7,12 +7,16 @@
 #include "ray.h"
 #include "array"
 
-class triangle : public hittable {
+class triangle {
     public:
-        triangle( const std::array<point3, 3> vertices, std::shared_ptr<material> mat )
-            : vertices(vertices), mat(mat) {}
+        triangle( const std::array<point3, 3> vertices) : vertices(vertices) {}
+        triangle( point3 v1, point3 v2, point3 v3 ){
+            vertices[0] = v1;
+            vertices[1] = v2;
+            vertices[2] = v3;
+        }
 
-        bool hit( const ray& r, interval ray_t, hit_record& rec ) const override {
+        bool ray_intersection( const ray& r, interval ray_t, hit_record& rec ) {
             vec3 e1 = vec3(vertices[1] - vertices[0]); // edge from vertex 1 to vertex 2
             vec3 e2 = vec3(vertices[2] - vertices[0]); // edge from vertex 1 to 3
             vec3 r_cross_e2 = cross(r.direction(), e2); // vector normal to plane triangle exists on
@@ -45,7 +49,6 @@ class triangle : public hittable {
             // Store hit info in rec
             rec.t = t;
             rec.p = r.at(t);
-            rec.mat = mat;
             vec3 outward_normal = unit_vector(cross(e1, e2));
             rec.set_face_normal(r, outward_normal);
 
@@ -55,7 +58,6 @@ class triangle : public hittable {
 
     private:
         std::array<point3, 3> vertices;
-        std::shared_ptr<material> mat;
 };
 
 #endif
